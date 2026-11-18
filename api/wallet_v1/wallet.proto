@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package wallet_v1;
+
+import "google/protobuf/timestamp.proto";
+//import "google/protobuf/empty.proto";
+//import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "buf/validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/pavel-pj/wallet/pkg/wallet_v1;wallet_v1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) ={
+    info:{
+        title:"User API",
+        version:"1.0.0",
+        contact: {
+            name:"Pavel Voroshilov",
+            email: "voroshilov.pavel@gmail.com"
+        };
+    };
+
+    host:"localhost:50470",
+    schemes: HTTP,
+    schemes: HTTPS,
+    consumes: "application/json",
+    produces: "application/json"
+};
+
+ 
+service WalletV1 {
+    // Создает пользователя
+    rpc Store(StoreRequest) returns (StoreResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/create"
+            body: "*"
+        };
+    }
+
+     rpc Wallet(WalletRequest) returns (WalletResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/wallet"
+            body: "*"
+        };
+    }
+  
+  
+    //rpc Get(GetRequest) returns (GetResponse) {
+    //    option (google.api.http) = { get: "/user/v1/{id}" };
+    //}
+    
+  }
+
+  enum OperationType {
+   OPERATION_TYPE_UNSPECIFIED = 0;
+   DEPOSIT = 1;
+   WITHDRAW = 2;
+}
+
+
+message Wallet {
+    string uuid = 1;
+    int64 amount =2;
+    google.protobuf.Timestamp created_at= 3;
+    google.protobuf.Timestamp updated_at= 4;
+}
+ 
+ 
+ 
+message StoreRequest {
+    int64 amount =1; 
+}
+message StoreResponse {
+    Wallet  wallet  = 1;
+}
+ 
+
+message WalletRequest {
+    string wallet_id =1[(buf.validate.field).string = {
+        uuid: true
+    }];
+    OperationType operation_type =2 [(buf.validate.field).enum = { in: [1, 2] }];
+    int64 amount =3;
+}
+message WalletResponse {
+    Wallet  wallet  = 1;
+}
+ 

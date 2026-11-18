@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "User API",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Pavel Voroshilov",
+      "email": "voroshilov.pavel@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "WalletV1"
+    }
+  ],
+  "host": "localhost:50470",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/create": {
+      "post": {
+        "summary": "Создает пользователя",
+        "operationId": "WalletV1_Store",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/wallet_v1StoreResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wallet_v1StoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WalletV1"
+        ]
+      }
+    },
+    "/api/v1/wallet": {
+      "post": {
+        "operationId": "WalletV1_Wallet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/wallet_v1WalletResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/wallet_v1WalletRequest"
+            }
+          }
+        ],
+        "tags": [
+          "WalletV1"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "wallet_v1OperationType": {
+      "type": "string",
+      "enum": [
+        "OPERATION_TYPE_UNSPECIFIED",
+        "DEPOSIT",
+        "WITHDRAW"
+      ],
+      "default": "OPERATION_TYPE_UNSPECIFIED"
+    },
+    "wallet_v1StoreRequest": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "wallet_v1StoreResponse": {
+      "type": "object",
+      "properties": {
+        "wallet": {
+          "$ref": "#/definitions/wallet_v1Wallet"
+        }
+      }
+    },
+    "wallet_v1Wallet": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "wallet_v1WalletRequest": {
+      "type": "object",
+      "properties": {
+        "walletId": {
+          "type": "string"
+        },
+        "operationType": {
+          "$ref": "#/definitions/wallet_v1OperationType"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "wallet_v1WalletResponse": {
+      "type": "object",
+      "properties": {
+        "wallet": {
+          "$ref": "#/definitions/wallet_v1Wallet"
+        }
+      }
+    }
+  }
+}
