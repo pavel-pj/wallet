@@ -1,5 +1,5 @@
 [![tests](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml)
-
+[![lint](https://github.com/pavel-pj/wallet/actions/workflows/linter.yaml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/linter.yaml)
 # Wallet Service
 
 Сервис кошельков: gRPC, HTTP/JSON API и Swagger UI, база — PostgreSQL.
@@ -39,6 +39,68 @@ make dev-down    # остановить (удаляет данные БД!)
 | `50480` | Swagger UI |
 | `6001` | PostgreSQL снаружи (пример; задаётся `PG_PORT`) |
 
+## Swagger
+
+Открыть `http://localhost:50480` — там описаны HTTP-методы и можно отправлять запросы.
+
+ ## API
+
+| Метод | Путь | Назначение |
+|---|---|---|
+| POST | `/api/v1/create` | создать кошелёк |
+| POST | `/api/v1/wallet` | пополнить или списать |
+| GET | `/api/v1/{uuid}` | получить баланс кошелька |
+
+Создать кошелёк:
+
+```bash
+curl -X POST http://localhost:50470/api/v1/create \
+  -H 'Content-Type: application/json' \
+  -d '{"amount": 2000}'
+```
+
+Пополнить:
+
+```bash
+curl -X POST http://localhost:50470/api/v1/wallet \
+  -H 'Content-Type: application/json' \
+  -d '{"wallet_id":"<uuid>","operation_type":"DEPOSIT","amount":544}'
+```
+
+Списать:
+
+```bash
+curl -X POST http://localhost:50470/api/v1/wallet \
+  -H 'Content-Type: application/json' \
+  -d '{"wallet_id":"<uuid>","operation_type":"WITHDRAW","amount":544}'
+```
+
+`operation_type` — `DEPOSIT` или `WITHDRAW`. `wallet_id` — UUID кошелька, полученный при создании.
+
+Получить баланс:
+
+```bash
+curl http://localhost:50470/api/v1/<uuid>
+```
+
+Пример ответа:
+
+
+```bash
+{
+  "wallet": {
+    "uuid": "7d8bf21f-ada5-4b3b-9e6a-fd4381f7348e",
+    "amount": "2000",
+    "createdAt": "2026-11-19T12:00:00Z",
+    "updatedAt": "2026-11-19T12:00:00Z"
+  }
+}
+```
+
+
+gRPC-сервис: `wallet_v1.WalletV1` (`Store`, `Wallet`,`Get`), порт `50460`.
+
+ 
 ## Конфигурация
 
 Все настройки — в `config.env`:
@@ -70,43 +132,3 @@ SERVER_HTTP_PORT=50470
 SERVER_SWAGGER_PORT=50480
 SERVER_SWAGGER_HOST=localhost
 ```
-
-
-## API
-
-| Метод | Путь | Назначение |
-|---|---|---|
-| POST | `/api/v1/create` | создать кошелёк |
-| POST | `/api/v1/wallet` | пополнить или списать |
-
-Создать кошелёк:
-
-```bash
-curl -X POST http://localhost:50470/api/v1/create \
-  -H 'Content-Type: application/json' \
-  -d '{"amount": 2000}'
-```
-
-Пополнить:
-
-```bash
-curl -X POST http://localhost:50470/api/v1/wallet \
-  -H 'Content-Type: application/json' \
-  -d '{"wallet_id":"<uuid>","operation_type":"DEPOSIT","amount":544}'
-```
-
-Списать:
-
-```bash
-curl -X POST http://localhost:50470/api/v1/wallet \
-  -H 'Content-Type: application/json' \
-  -d '{"wallet_id":"<uuid>","operation_type":"WITHDRAW","amount":544}'
-```
-
-`operation_type` — `DEPOSIT` или `WITHDRAW`. `wallet_id` — UUID кошелька, полученный при создании.
-
-gRPC-сервис: `wallet_v1.WalletV1` (`Store`, `Wallet`), порт `50460`.
-
-## Swagger
-
-Открыть `http://localhost:50480` — там описаны HTTP-методы и можно отправлять запросы.
