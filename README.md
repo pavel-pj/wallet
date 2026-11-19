@@ -1,5 +1,6 @@
 [![tests](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml)
 [![lint](https://github.com/pavel-pj/wallet/actions/workflows/linter.yaml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/linter.yaml)
+[![integration-tests](https://github.com/pavel-pj/wallet/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/integration-tests.yaml)
 # Wallet Service
 
 Сервис кошельков: gRPC, HTTP/JSON API и Swagger UI, база — PostgreSQL.
