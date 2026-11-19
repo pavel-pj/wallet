@@ -113,5 +113,5 @@ dev-logs:
 	$(DC) logs -f app
 
 loadtest:
-	go run ./cmd/loadtest   -wallet 1c860e04-d620-4e3d-9b25-c3c0edbdf465   -rate 3000   -duration 20s   -workers 300   -op DEPOSIT   -amount 1
+	go run ./cmd/loadtest   -wallet 686879b8-0edd-44a0-bf18-3f3327736945   -rate 1000   -duration 10s   -workers 300   -op DEPOSIT   -amount 1
 
