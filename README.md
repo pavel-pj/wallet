@@ -21,6 +21,14 @@ make dev-logs    # логи приложения
 make dev-down    # остановить (удаляет данные БД!)
 ```
 
+Полезные команды:
+
+```bash
+make tests-cover               # юнит-тесты, отчет в coverage.html
+make tests-integration-cover   # интеграционные тесты, отчет в coverage.integration.html
+make lint                      # линтер
+```
+
 При старте автоматически применяются миграции, затем поднимается приложение.
 
 После запуска:

@@ -70,7 +70,16 @@ tests-cover:
 		./internal/api/wallet/tests ./internal/service/wallet/tests
 	go tool cover -func=coverage.out
 	go tool cover -html=coverage.out -o coverage.html	
- 
+
+tests-integration-cover:
+	go test -tags=integration -count=1 \
+		-coverpkg=github.com/pavel-pj/wallet/internal/repository/wallet \
+		-coverprofile=coverage.integration.out \
+		./internal/repository/wallet/tests
+	go tool cover -func=coverage.integration.out
+	go tool cover -html=coverage.integration.out -o coverage.integration.html
+
+
 
 lib:
 	GOPROXY=direct go get github.com/pavel-pj/platform_lib@latest

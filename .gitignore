@@ -4,3 +4,5 @@ config.env
 .env
 coverage.out
 coverage.html
+coverage.integration.html
+coverage.integration.out
