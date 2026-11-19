@@ -1,7 +1,35 @@
+[![tests](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml/badge.svg)](https://github.com/pavel-pj/wallet/actions/workflows/tests.yml)
+
 # Wallet Service
 
 Сервис кошельков: gRPC, HTTP/JSON API и Swagger UI, база — PostgreSQL.
  
+ 
+
+## Запуск
+
+```bash
+cp config.env.example config.env
+```
+
+Заполнить `config.env` и запустить:
+
+```bash
+make dev-build   # первый запуск
+make dev-up      # обычный запуск
+make dev-logs    # логи приложения
+make dev-down    # остановить (удаляет данные БД!)
+```
+
+При старте автоматически применяются миграции, затем поднимается приложение.
+
+После запуска:
+
+- HTTP API: `http://localhost:50470`
+- gRPC: `localhost:50460`
+- Swagger: `http://localhost:50480`
+
+
 ## Порты
 
 | Порт | Что |
@@ -43,28 +71,6 @@ SERVER_SWAGGER_PORT=50480
 SERVER_SWAGGER_HOST=localhost
 ```
 
-## Запуск
-
-```bash
-cp config.env.example config.env
-```
-
-Заполнить `config.env` и запустить:
-
-```bash
-make dev-build   # первый запуск
-make dev-up      # обычный запуск
-make dev-logs    # логи приложения
-make dev-down    # остановить (удаляет данные БД!)
-```
-
-При старте автоматически применяются миграции, затем поднимается приложение.
-
-После запуска:
-
-- HTTP API: `http://localhost:50470`
-- gRPC: `localhost:50460`
-- Swagger: `http://localhost:50480`
 
 ## API
 
