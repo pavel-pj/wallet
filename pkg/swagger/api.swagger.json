@@ -89,6 +89,36 @@
           "WalletV1"
         ]
       }
+    },
+    "/api/v1/{uuid}": {
+      "get": {
+        "operationId": "WalletV1_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/wallet_v1GetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WalletV1"
+        ]
+      }
     }
   },
   "definitions": {
@@ -117,6 +147,14 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "wallet_v1GetResponse": {
+      "type": "object",
+      "properties": {
+        "wallet": {
+          "$ref": "#/definitions/wallet_v1Wallet"
         }
       }
     },

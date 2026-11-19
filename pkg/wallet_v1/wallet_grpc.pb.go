@@ -25,6 +25,7 @@ type WalletV1Client interface {
 	// Создает пользователя
 	Store(ctx context.Context, in *StoreRequest, opts ...grpc.CallOption) (*StoreResponse, error)
 	Wallet(ctx context.Context, in *WalletRequest, opts ...grpc.CallOption) (*WalletResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 }
 
 type walletV1Client struct {
@@ -53,6 +54,15 @@ func (c *walletV1Client) Wallet(ctx context.Context, in *WalletRequest, opts ...
 	return out, nil
 }
 
+func (c *walletV1Client) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, "/wallet_v1.WalletV1/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WalletV1Server is the server API for WalletV1 service.
 // All implementations must embed UnimplementedWalletV1Server
 // for forward compatibility
@@ -60,6 +70,7 @@ type WalletV1Server interface {
 	// Создает пользователя
 	Store(context.Context, *StoreRequest) (*StoreResponse, error)
 	Wallet(context.Context, *WalletRequest) (*WalletResponse, error)
+	Get(context.Context, *GetRequest) (*GetResponse, error)
 	mustEmbedUnimplementedWalletV1Server()
 }
 
@@ -72,6 +83,9 @@ func (UnimplementedWalletV1Server) Store(context.Context, *StoreRequest) (*Store
 }
 func (UnimplementedWalletV1Server) Wallet(context.Context, *WalletRequest) (*WalletResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Wallet not implemented")
+}
+func (UnimplementedWalletV1Server) Get(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
 func (UnimplementedWalletV1Server) mustEmbedUnimplementedWalletV1Server() {}
 
@@ -122,6 +136,24 @@ func _WalletV1_Wallet_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletV1_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletV1Server).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/wallet_v1.WalletV1/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletV1Server).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WalletV1_ServiceDesc is the grpc.ServiceDesc for WalletV1 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -136,6 +168,10 @@ var WalletV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Wallet",
 			Handler:    _WalletV1_Wallet_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _WalletV1_Get_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

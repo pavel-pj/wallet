@@ -9,4 +9,5 @@ import (
 type WalletService interface {
 	Store(ctx context.Context, amount int64) (model.Wallet, error)
 	Wallet(ctx context.Context, wallet model.UpdateWallet) (model.Wallet, error)
+	Get(ctx context.Context, uuid string) (model.Wallet, error)
 }

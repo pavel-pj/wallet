@@ -62,7 +62,6 @@ goose-create:
 lint:
 	$(LOCAL_BIN)/golangci-lint run ./...
 
-
  
 tests-cover:	
 	go test -count=5 \
