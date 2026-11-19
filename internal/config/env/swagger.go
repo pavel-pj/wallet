@@ -14,8 +14,8 @@ type SwaggerConfig struct {
 
 func NewSwaggerConfig() (SwaggerConfig, error) {
 	// Загружаем .env файл
-	if err := godotenv.Load(); err != nil {
-		log.Println("Warning: .env file not found, using environment variables")
+	if err := godotenv.Load("config.env"); err != nil {
+		log.Println("Warning: config.env file not found, using environment variables")
 	}
 
 	cfg := SwaggerConfig{}

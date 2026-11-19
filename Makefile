@@ -111,3 +111,7 @@ dev-down:
 	$(DC) down -v
 dev-logs:
 	$(DC) logs -f app
+
+loadtest:
+	go run ./cmd/loadtest   -wallet 1c860e04-d620-4e3d-9b25-c3c0edbdf465   -rate 3000   -duration 20s   -workers 300   -op DEPOSIT   -amount 1
+

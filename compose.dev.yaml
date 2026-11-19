@@ -36,7 +36,7 @@ services:
     volumes:
       - .:/app
       - go-mod:/go/pkg/mod
-      - ./config.env:/app/.env:ro     
+#      - ./config.env:/app/.env:ro     
       - go-build:/root/.cache/go-build
     env_file: config.env    
     depends_on:

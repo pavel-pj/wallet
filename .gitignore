@@ -1,5 +1,6 @@
 bin/
 vendor.protogen
 config.env
+.env
 coverage.out
 coverage.html

@@ -29,8 +29,6 @@ import (
 
 // App хранит ВСЕ зависимости приложения
 type App struct {
-	//Services serv.UserService
-	//Pool     *pgxpool.Pool
 	serviceProvider *serviceProvider
 	grpcServer      *grpc.Server
 	httpServer      *http.Server
@@ -112,7 +110,7 @@ func (a *App) initDeps(ctx context.Context) error {
 }
 
 func (a *App) initConfig(_ context.Context) error {
-	err := env.Load(".env")
+	err := env.Load("config.env")
 	if err != nil {
 		return err
 	}

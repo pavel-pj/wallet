@@ -13,12 +13,14 @@ type PGConfig struct {
 	DBName     string
 	DBHost     string
 	DBPort     string
+	DBMaxConns string
+	DBMinConns string
 }
 
 func NewPGConfig() (PGConfig, error) {
 	// Загружаем .env файл
-	if err := godotenv.Load(); err != nil {
-		log.Println("Warning: .env file not found, using environment variables")
+	if err := godotenv.Load("config.env"); err != nil {
+		log.Println("Warning: config.env file not found, using environment variables")
 	}
 
 	cfg := PGConfig{}
@@ -28,11 +30,22 @@ func NewPGConfig() (PGConfig, error) {
 	cfg.DBName = getEnv("POSTGRES_DB", "app")
 	cfg.DBHost = getEnv("DB_HOST", "localhost")
 	cfg.DBPort = getEnv("DB_PORT", "5432")
+	cfg.DBMaxConns = getEnv("DB_MAX_CONNS", "50")
+	cfg.DBMinConns = getEnv("DB_MIN_CONNS", "10")
 
 	return cfg, nil
 }
 
 func (c PGConfig) DSN() string {
 
-	return "host=" + c.DBHost + " port=" + c.DBPort + " user=" + c.DBUser + " password=" + c.DBPassword + " dbname=" + c.DBName + " sslmode=disable"
+	return "host=" + c.DBHost +
+		" port=" + c.DBPort +
+		" user=" + c.DBUser +
+		" password=" +
+		c.DBPassword +
+		" dbname=" +
+		c.DBName +
+		" sslmode=disable" +
+		" pool_max_conns=" + c.DBMaxConns +
+		" pool_min_conns=" + c.DBMinConns
 }
