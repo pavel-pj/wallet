@@ -12,8 +12,7 @@
 ```bash
 cp config.env.example config.env
 ```
-
-Заполнить `config.env` и запустить:
+В конфиге уже есть значения по умолчанию. Далее -  запустить:
 
 ```bash
 make dev-build   # первый запуск
