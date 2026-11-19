@@ -62,9 +62,7 @@ func (c *Closer) CloseAll() {
 
 		var funcs []func() error
 		c.mu.Lock()
-		for _, f := range c.funcs {
-			funcs = append(funcs, f)
-		}
+		funcs = c.funcs
 		c.funcs = nil
 		c.mu.Unlock()
 

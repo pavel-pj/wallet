@@ -25,7 +25,7 @@ func TestStore(t *testing.T) {
 
 	type args struct {
 		ctx context.Context
-		req desc.StoreRequest
+		req *desc.StoreRequest
 	}
 
 	var (
@@ -68,7 +68,7 @@ func TestStore(t *testing.T) {
 			name: "success",
 			args: args{
 				ctx: ctx,
-				req: desc.StoreRequest{
+				req: &desc.StoreRequest{
 					Amount: amount,
 				},
 			},
@@ -85,7 +85,7 @@ func TestStore(t *testing.T) {
 			name: "error",
 			args: args{
 				ctx: ctx,
-				req: desc.StoreRequest{
+				req: &desc.StoreRequest{
 					Amount: amount,
 				},
 			},
@@ -100,13 +100,13 @@ func TestStore(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
+
 		t.Run(tt.name, func(t *testing.T) {
 
 			t.Parallel()
 
 			api := walletApi.NewWalletImplimentation(tt.walletServiceMock(mc))
-			resp, err := api.Store(tt.args.ctx, &tt.args.req)
+			resp, err := api.Store(tt.args.ctx, tt.args.req)
 			assert.Equal(t, tt.err, err)
 			assert.Equal(t, tt.want, resp)
 

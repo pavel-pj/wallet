@@ -116,8 +116,8 @@ func (s *serviceProvider) GetDBClient(ctx context.Context) db.Client {
 
 		closer.Add(func() error {
 			// тк pool.Close не возвращает error - создаем обертку
-			client.Close()
-			return nil
+			return client.Close()
+
 		})
 
 		s.pgClient = client

@@ -25,7 +25,7 @@ func TestWallet(t *testing.T) {
 
 	type args struct {
 		ctx context.Context
-		req desc.WalletRequest
+		req *desc.WalletRequest
 	}
 
 	var (
@@ -38,7 +38,7 @@ func TestWallet(t *testing.T) {
 		createdAt = time.Now()
 		updatedAt = time.Now()
 
-		reqSuccess = desc.WalletRequest{
+		reqSuccess = &desc.WalletRequest{
 			WalletId:      uuid,
 			OperationType: desc.OperationType_DEPOSIT,
 			Amount:        amount,
@@ -108,13 +108,13 @@ func TestWallet(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
+		//tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 
 			t.Parallel()
 
 			api := walletApi.NewWalletImplimentation(tt.walletServiceMock(mc))
-			resp, err := api.Wallet(tt.args.ctx, &tt.args.req)
+			resp, err := api.Wallet(tt.args.ctx, tt.args.req)
 			assert.Equal(t, tt.err, err)
 			assert.Equal(t, tt.want, resp)
 
